@@ -18,7 +18,7 @@ class SettingsView extends StatelessWidget {
     return Scaffold(
       appBar: const CustomAppbar(title: 'Settings'),
       body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16),
+        padding: const EdgeInsets.symmetric(horizontal: 8),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
@@ -45,8 +45,7 @@ class SettingsView extends StatelessWidget {
                       label: 'Order History', navigateTo: OrderHistory()),
                   const CustomListTile(
                       label: 'Account Settings', navigateTo: AccountSettings()),
-                  const CustomListTile(
-                      label: 'Vendors', navigateTo: VendorsView()),
+                  CustomListTile(label: 'Vendors', navigateTo: VendorsView()),
                   const CustomListTile(label: 'About', navigateTo: AboutView()),
                   Container(
                     margin: const EdgeInsets.symmetric(vertical: 5),

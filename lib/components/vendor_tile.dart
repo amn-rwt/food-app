@@ -6,7 +6,15 @@ import 'package:tiffin_app/themes_and_styles/button_styles.dart';
 
 class VendorTile extends StatelessWidget {
   final bool isSubscribed;
-  const VendorTile({super.key, required this.isSubscribed});
+  final String name;
+  final String phone;
+  final String price;
+  const VendorTile(
+      {super.key,
+      required this.isSubscribed,
+      required this.name,
+      required this.phone,
+      required this.price});
 
   @override
   Widget build(BuildContext context) {
@@ -23,16 +31,16 @@ class VendorTile extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              'Vendors name',
+              name,
               style: headingTextStyle(),
             ),
             Text(
-              'Vendors Phone',
+              phone,
               style: subTextStyle(),
             ),
-            const Text(
-              'Price per tiffin: ',
-              style: TextStyle(fontSize: 12, fontStyle: FontStyle.italic),
+            Text(
+              'Price per tiffin: $price',
+              style: const TextStyle(fontSize: 12, fontStyle: FontStyle.italic),
             ), //${pricePerTiffin}
             Align(
               alignment: Alignment.centerRight,

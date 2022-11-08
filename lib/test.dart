@@ -16,9 +16,9 @@ class _TestState extends State<Test> {
     return Scaffold(
       appBar: const CustomAppbar(title: 'Vendors'),
       backgroundColor: scaffoldBackgroundColor,
-      body: const VendorTile(
-        isSubscribed: true,
-      ),
+      // body: const VendorTile(
+      //   isSubscribed: true,
+      // ),
     );
   }
 }

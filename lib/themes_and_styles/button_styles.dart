@@ -3,10 +3,11 @@ import 'package:tiffin_app/constants/color_constants.dart';
 
 ButtonStyle activeButtonStyle() {
   return ElevatedButton.styleFrom(
+    elevation: 0,
     backgroundColor: primaryColor,
     padding: const EdgeInsets.symmetric(horizontal: 24),
     textStyle: const TextStyle(fontSize: 14, fontWeight: FontWeight.w400),
-    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
   );
 }
 

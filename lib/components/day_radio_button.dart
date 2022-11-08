@@ -30,4 +30,3 @@ class _DayRadioButtonState extends State<DayRadioButton> {
     );
   }
 }
-  

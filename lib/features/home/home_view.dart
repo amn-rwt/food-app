@@ -17,53 +17,52 @@ class HomeView extends StatelessWidget {
         appBar: const HomeAppBar(),
         body: SingleChildScrollView(
           child: Padding(
-            padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 8),
-            child: Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const TodaysMenu(),
-                  const SizedBox(height: 15),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        'Order History',
-                        style: headingTextStyle(),
-                      ),
-                      GestureDetector(
-                        onTap: () => Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const OrderHistory(),
-                          ),
-                        ),
-                        child: const Text(
-                          'see all',
-                          style: TextStyle(
-                            color: Colors.blue,
-                            decoration: TextDecoration.underline,
-                          ),
-                        ),
-                      )
-                    ],
-                  ),
-                  const SizedBox(height: 10),
-                  Flexible(
-                    child: ListView.separated(
-                      shrinkWrap: true,
-                      physics: NeverScrollableScrollPhysics(),
-                      itemCount: 10,
-                      separatorBuilder: (context, index) => const Divider(),
-                      itemBuilder: ((context, index) => const OrderHistoryTile(
-                            amount: 1,
-                            date: 'Monday, 12 Nov',
-                            vendor: 'vendor 1',
-                          )),
+            padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 8),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const TodaysMenu(),
+                const SizedBox(height: 15),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      'Order History',
+                      style: headingTextStyle(),
                     ),
+                    GestureDetector(
+                      onTap: () => Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const OrderHistory(),
+                        ),
+                      ),
+                      child: const Text(
+                        'see all',
+                        style: TextStyle(
+                          color: Colors.blue,
+                          decoration: TextDecoration.underline,
+                        ),
+                      ),
+                    )
+                  ],
+                ),
+                const SizedBox(height: 10),
+                Flexible(
+                  child: ListView.separated(
+                    shrinkWrap: true,
+                    physics: NeverScrollableScrollPhysics(),
+                    itemCount: 10,
+                    separatorBuilder: (context, index) => const Divider(),
+                    itemBuilder: ((context, index) => const OrderHistoryTile(
+                          amount: 1,
+                          date: 'Monday, 12 Nov',
+                          vendor: 'vendor 1',
+                        )),
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
           ),
         ),

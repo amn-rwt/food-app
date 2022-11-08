@@ -23,7 +23,7 @@ class NoVenodrsAddedTile extends StatelessWidget {
               padding: const EdgeInsets.symmetric(horizontal: 24),
             ),
             onPressed: () => Navigator.push(context,
-                MaterialPageRoute(builder: (context) => const VendorsView())),
+                MaterialPageRoute(builder: (context) => VendorsView())),
             child: const Text('Go to vendors'),
           ),
         ],

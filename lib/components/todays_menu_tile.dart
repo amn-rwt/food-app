@@ -1,117 +1,5 @@
-// import 'package:flutter/material.dart';
-// import 'package:tiffin_app/themes_and_styles/button_styles.dart';
-// import 'package:tiffin_app/constants/color_constants.dart';
-// import 'package:tiffin_app/themes_and_styles/text_styles.dart';
-
-// class TodaysMenu extends StatelessWidget {
-//   final String vendorsName;
-//   final int items;
-
-//   const TodaysMenu({super.key, required this.items, required this.vendorsName});
-
-//   @override
-//   Widget build(BuildContext context) {
-//     int count = 1;
-//     return Flexible(
-//       child: Container(
-//         // height: 200,
-//         padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 16),
-//         decoration: BoxDecoration(
-//           borderRadius: BorderRadius.circular(10),
-//           color: listTileColor,
-//         ),
-//         child: Column(
-//           mainAxisSize: MainAxisSize.min,
-//           children: [
-//             Text(
-//               vendorsName,
-//               style: headingStyle(),
-//             ), // * replace with vendor name
-//             const Text(
-//               'Today\'s Menu',
-//               style: TextStyle(
-//                 fontSize: 16,
-//               ),
-//             ),
-//             const SizedBox(height: 20),
-//             Expanded(
-//               child: GridView.builder(
-//                 physics: const NeverScrollableScrollPhysics(),
-//                 shrinkWrap: true,
-//                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-//                   mainAxisSpacing: 8,
-//                   crossAxisSpacing: 4,
-//                   crossAxisCount: 4,
-//                 ),
-//                 itemCount: items,
-//                 itemBuilder: (context, index) => Column(
-//                   children: [
-//                     Container(
-//                       width: 50,
-//                       height: 50,
-//                       decoration: BoxDecoration(
-//                         borderRadius: BorderRadius.circular(10),
-//                         color: Colors.amber,
-//                       ),
-//                     ),
-//                     const Text('data')
-//                   ],
-//                 ),
-//               ),
-//             ),
-//             const SizedBox(height: 20),
-//             Row(
-//               mainAxisAlignment: MainAxisAlignment.end,
-//               children: [
-//                 Container(
-//                   height: 40,
-//                   decoration: BoxDecoration(
-//                     color: Colors.white,
-//                     borderRadius: BorderRadius.circular(10),
-//                   ),
-//                   child: Row(
-//                     mainAxisSize: MainAxisSize.min,
-//                     children: [
-//                       IconButton(
-//                         onPressed: () => count--,
-//                         icon: const Icon(
-//                           Icons.remove,
-//                           color: Colors.black54,
-//                           size: 16,
-//                         ),
-//                       ),
-//                       Text(count.toString()),
-//                       IconButton(
-//                         onPressed: () => count++,
-//                         icon: const Icon(
-//                           Icons.add,
-//                           color: Colors.black54,
-//                           size: 16,
-//                         ),
-//                       ),
-//                     ],
-//                   ),
-//                 ),
-//                 const SizedBox(width: 10),
-//                 ElevatedButton(
-//                   style: activeButtonStyle(),
-//                   onPressed: () {},
-//                   child: const Text('Order'),
-//                 ),
-//               ],
-//             ),
-//           ],
-//         ),
-//       ),
-//     );
-//   }
-// }
-
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-
+import 'package:tiffin_app/themes_and_styles/button_styles.dart';
 import 'compact_button.dart';
 
 class TodaysMenu extends StatelessWidget {
@@ -176,7 +64,7 @@ class TodaysMenu extends StatelessWidget {
             child: CompactButton(
               label: 'Order',
               onPressed: () {},
-              buttonStyle: ElevatedButton.styleFrom(),
+              buttonStyle: activeButtonStyle(),
             ),
           ),
           const SizedBox(
