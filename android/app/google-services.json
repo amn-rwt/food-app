@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "862252089349",
+    "project_id": "food-app-c362d",
+    "storage_bucket": "food-app-c362d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:862252089349:android:94eb8dc31b7438b5e4dc6c",
+        "android_client_info": {
+          "package_name": "com.example.tiffin_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "862252089349-t231f79p16jv5s11fnmjaosv7s4ecrdd.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC1WHh_iV0LMbRQV0fqmbWq2oZQFovW8Ck"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "862252089349-t231f79p16jv5s11fnmjaosv7s4ecrdd.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
