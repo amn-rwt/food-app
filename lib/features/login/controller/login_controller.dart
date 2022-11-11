@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -19,9 +20,14 @@ class LoginController extends GetxController {
       idToken: googleAuth?.idToken,
     );
 
+    FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
+    final CollectionReference users = firebaseFirestore.collection('users');
+
     return await FirebaseAuth.instance.signInWithCredential(credential).then(
-        (value) => value.additionalUserInfo!.isNewUser
-            ? firebaseServices.addUser(googleUser!.displayName!, googleUser.email)
-            : log('already a user'));
+          (value) => value.additionalUserInfo!.isNewUser
+              ? FirebaseServices.addUser(
+                  googleUser!.displayName!, googleUser.email)
+              : log('already a user'),
+        );
   }
 }

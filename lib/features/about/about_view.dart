@@ -9,7 +9,15 @@ class AboutView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppbar(title: 'About'),
+      // appBar: CustomAppbar(title: 'About'),
+      body: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
+        child: Column(
+          children: [
+            const CustomAppbar(title: 'About'),
+          ],
+        ),
+      ),
     );
   }
 }

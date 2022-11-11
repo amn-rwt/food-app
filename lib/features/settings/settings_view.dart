@@ -16,12 +16,13 @@ class SettingsView extends StatelessWidget {
   Widget build(BuildContext context) {
     final user = FirebaseAuth.instance.currentUser;
     return Scaffold(
-      appBar: const CustomAppbar(title: 'Settings'),
+      // appBar: const CustomAppbar(title: 'Settings'),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 8),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
+            CustomAppbar(title: 'Settings'),
             const SizedBox(height: 10),
             CircleAvatar(
               radius: 50,

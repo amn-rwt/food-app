@@ -8,19 +8,21 @@ class OrderHistory extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const CustomAppbar(title: 'Order History'),
+      // appBar: const CustomAppbar(title: 'Order History'),
       body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16),
+        padding: const EdgeInsets.symmetric(horizontal: 8),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.end,
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
+            CustomAppbar(title: 'Order History'),
             TextButton(
               onPressed: () {},
               child: const Text('This month'), // * open popUp to filter data.
             ),
-            Flexible(
+            Expanded(
               child: ListView.separated(
+                padding: EdgeInsets.zero,
                 shrinkWrap: true,
                 itemCount: 15,
                 separatorBuilder: ((context, index) => const Divider()),

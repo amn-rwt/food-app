@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tiffin_app/constants/color_constants.dart';
 import 'package:tiffin_app/themes_and_styles/button_styles.dart';
 import 'compact_button.dart';
 
@@ -59,13 +60,37 @@ class TodaysMenu extends StatelessWidget {
           Container(
               // child: Label,
               ),
-          Align(
-            alignment: Alignment.centerRight,
-            child: CompactButton(
-              label: 'Order',
-              onPressed: () {},
-              buttonStyle: activeButtonStyle(),
-            ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              Container(
+                height: 40,
+                // width: 100,
+                decoration: BoxDecoration(
+                  // color: Colors.black,
+                  borderRadius: BorderRadius.circular(5),
+                ),
+                child: Row(
+                  children: [
+                    IconButton(
+                      onPressed: () {},
+                      icon: Icon(Icons.remove, color: primaryColor, size: 16),
+                    ),
+                    Text('1'),
+                    IconButton(
+                      onPressed: () {},
+                      icon: Icon(Icons.add, color: primaryColor, size: 16),
+                    ),
+                  ],
+                ),
+              ),
+              SizedBox(width: 10),
+              CompactButton(
+                label: 'Order',
+                onPressed: () {},
+                buttonStyle: activeButtonStyle(),
+              ),
+            ],
           ),
           const SizedBox(
             width: 10,

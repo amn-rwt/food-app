@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import '../themes_and_styles/button_styles.dart';
 
 class LargeButton extends StatelessWidget {
-  final VoidCallback onPressed;
+  final Function onPressed;
   final String label;
   final bool isLoading;
   const LargeButton({
@@ -19,7 +19,7 @@ class LargeButton extends StatelessWidget {
       height: 40,
       width: double.infinity,
       child: ElevatedButton(
-        onPressed: onPressed,
+        onPressed: () => onPressed,
         style: activeButtonStyle(),
         child: (isLoading)
             ? const CupertinoActivityIndicator(

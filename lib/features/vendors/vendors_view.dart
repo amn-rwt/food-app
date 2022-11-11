@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 import 'package:tiffin_app/components/custom_appbar.dart';
 import 'package:tiffin_app/components/vendor_tile.dart';
 import 'package:tiffin_app/features/vendors/vendors_controller.dart';
+import 'package:tiffin_app/services/firebase_services.dart';
 
 class VendorsView extends StatelessWidget {
   VendorsView({super.key});
@@ -27,12 +28,18 @@ class VendorsView extends StatelessWidget {
               } else if (snapshot.connectionState == ConnectionState.done) {
                 log(snapshot.toString());
                 return ListView.separated(
+                  addAutomaticKeepAlives: true,
                   itemCount: snapshot.data!.docs.length,
                   separatorBuilder: (context, index) =>
                       const SizedBox(height: 10),
                   itemBuilder: (context, index) {
+                    Future<bool?> isSubscribed = FirebaseServices.isVendorAdded(
+                        snapshot.data!.docs[index].id);
                     return VendorTile(
-                      isSubscribed: true,
+                      onPressed: () => FirebaseServices.addVendor(
+                          snapshot.data!.docs[index].id),
+                      // if added remove else add
+                      isSubscribed: isSubscribed,
                       name: snapshot.data!.docs[index]['name'],
                       phone: snapshot.data!.docs[index]['phone'],
                       price: snapshot.data!.docs[index]['pricePerTiffin']

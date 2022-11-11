@@ -16,6 +16,6 @@ class AuthWrapper extends StatelessWidget {
         isLoggedIn = true;
       }
     });
-    return (isLoggedIn) ? LoginView() : const HomeView();
+    return (isLoggedIn) ? const HomeView() : LoginView();
   }
 }

@@ -14,14 +14,15 @@ class HomeView extends StatelessWidget {
     return SafeArea(
       bottom: false,
       child: Scaffold(
-        appBar: const HomeAppBar(),
+        // appBar: const HomeAppBar(),
         body: SingleChildScrollView(
           child: Padding(
-            padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 8),
+            padding: const EdgeInsets.fromLTRB(8, 0, 8, 4),
             child: Column(
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                const HomeAppBar(),
                 const TodaysMenu(),
                 const SizedBox(height: 15),
                 Row(
@@ -52,7 +53,7 @@ class HomeView extends StatelessWidget {
                 Flexible(
                   child: ListView.separated(
                     shrinkWrap: true,
-                    physics: NeverScrollableScrollPhysics(),
+                    physics: const NeverScrollableScrollPhysics(),
                     itemCount: 10,
                     separatorBuilder: (context, index) => const Divider(),
                     itemBuilder: ((context, index) => const OrderHistoryTile(

@@ -2,8 +2,6 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:tiffin_app/constants/color_constants.dart';
-import 'package:tiffin_app/features/home/home_view.dart';
-import 'package:tiffin_app/features/login/view/login_view.dart';
 import 'features/login/controller/auth_wrapper.dart';
 
 void main() async {
@@ -36,7 +34,7 @@ class MyApp extends StatelessWidget {
           ),
         ),
       ),
-      home: HomeView(),
+      home: const AuthWrapper(),
       debugShowCheckedModeBanner: false,
       // debugShowMaterialGrid: true,
     );
