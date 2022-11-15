@@ -33,13 +33,13 @@ class VendorsView extends StatelessWidget {
                   separatorBuilder: (context, index) =>
                       const SizedBox(height: 10),
                   itemBuilder: (context, index) {
-                    Future<bool?> isSubscribed = FirebaseServices.isVendorAdded(
+                    Future<bool?> isAdded = FirebaseServices.isVendorAdded(
                         snapshot.data!.docs[index].id);
                     return VendorTile(
                       onPressed: () => FirebaseServices.addVendor(
                           snapshot.data!.docs[index].id),
                       // if added remove else add
-                      isSubscribed: isSubscribed,
+                      isSubscribed: isAdded,
                       name: snapshot.data!.docs[index]['name'],
                       phone: snapshot.data!.docs[index]['phone'],
                       price: snapshot.data!.docs[index]['pricePerTiffin']

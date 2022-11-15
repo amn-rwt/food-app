@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:tiffin_app/components/custom_appbar.dart';
 import 'package:tiffin_app/components/order_histrory_tile.dart';
+import 'package:tiffin_app/extensions.dart';
+import 'package:tiffin_app/streams/order_history_stream.dart';
 
 class OrderHistory extends StatelessWidget {
   const OrderHistory({super.key});
@@ -15,26 +17,38 @@ class OrderHistory extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.end,
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            CustomAppbar(title: 'Order History'),
+            const CustomAppbar(title: 'Order History'),
             TextButton(
               onPressed: () {},
               child: const Text('This month'), // * open popUp to filter data.
             ),
-            Expanded(
-              child: ListView.separated(
-                padding: EdgeInsets.zero,
-                shrinkWrap: true,
-                itemCount: 15,
-                separatorBuilder: ((context, index) => const Divider()),
-                itemBuilder: (context, indext) => const OrderHistoryTile(
-                  amount: 1,
-                  date: 'Monday, 23 Nov',
-                  vendor: 'Vendor 1',
-                ), // * replace with firebase data
-              ),
+            StreamBuilder(
+              stream: orderHistoryStream,
+              builder: (context, snapshot) {
+                return !snapshot.hasData
+                    ? const Text('nodata')
+                    : Expanded(
+                        child: ListView.separated(
+                          padding: EdgeInsets.zero,
+                          shrinkWrap: true,
+                          itemCount: snapshot.data.docs.length,
+                          separatorBuilder: ((context, index) =>
+                              const Divider()),
+                          itemBuilder: (context, index) => OrderHistoryTile(
+                            amount: snapshot.data.docs[index]['amount'],
+                            date: DateTime.parse(snapshot
+                                    .data.docs[index]['date']
+                                    .toDate()
+                                    .toString())
+                                .dateFromTimestamp,
+                            vendor: snapshot.data.docs[index]['vendor'],
+                          ),
+                        ),
+                      );
+              },
             ),
-            Divider(),
-            Text('Total: ')
+            // Divider(),
+            // Text('Total: ')
           ],
         ),
       ),

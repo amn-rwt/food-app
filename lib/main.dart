@@ -1,7 +1,10 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:tiffin_app/services/time_provider.dart';
 import 'package:tiffin_app/constants/color_constants.dart';
+import 'package:tiffin_app/features/home/home_view.dart';
+import 'package:tiffin_app/test.dart';
 import 'features/login/controller/auth_wrapper.dart';
 
 void main() async {
@@ -34,9 +37,12 @@ class MyApp extends StatelessWidget {
           ),
         ),
       ),
-      home: const AuthWrapper(),
+      builder: (context, child) {
+        return CurrentTime(child: child ?? const SizedBox());
+      },
+      home: HomeView(),
+      // home: const Test(),
       debugShowCheckedModeBanner: false,
-      // debugShowMaterialGrid: true,
     );
   }
 }

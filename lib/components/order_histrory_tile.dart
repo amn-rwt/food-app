@@ -19,8 +19,14 @@ class OrderHistoryTile extends StatelessWidget {
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(vendor),
-            Text(date),
+            Text(
+              vendor,
+              style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+            ),
+            Text(
+              date,
+              style: const TextStyle(fontSize: 14),
+            ),
           ],
         ),
         Text(amount.toString()),

@@ -1,5 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
+import 'package:tiffin_app/services/time_provider.dart';
 
 class FirebaseServices {
   static void addUser(String username, String email) {
@@ -22,6 +24,7 @@ class FirebaseServices {
 
     addedVendors.set({
       'name': '',
+      'days': ['Day1', 'Day2']
     });
   }
 
@@ -39,8 +42,21 @@ class FirebaseServices {
       });
       return exists;
     } catch (e) {
-      return false;
+      addVendor(vendorReference);
     }
-    ;
+  }
+
+  static Future addOrder(
+      int amt, String vendorName, BuildContext context) async {
+    FirebaseFirestore.instance
+        .collection('users')
+        .doc(FirebaseAuth.instance.currentUser!.uid)
+        .collection('orders')
+        .doc(CurrentTime.of(context).toString().substring(0, 10))
+        .set({
+      'date': CurrentTime.of(context),
+      'amount': amt,
+      'vendor': vendorName
+    });
   }
 }

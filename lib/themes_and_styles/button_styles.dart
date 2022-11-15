@@ -15,7 +15,7 @@ ButtonStyle disableButtonStyle() {
   return ElevatedButton.styleFrom(
     backgroundColor: Colors.grey,
     padding: const EdgeInsets.symmetric(horizontal: 24),
-    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
     textStyle: TextStyle(
       fontSize: 14,
       fontWeight: FontWeight.w400,

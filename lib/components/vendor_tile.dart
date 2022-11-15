@@ -45,69 +45,42 @@ class VendorTile extends StatelessWidget {
               style: const TextStyle(fontSize: 12, fontStyle: FontStyle.italic),
             ), //${pricePerTiffin}
             Align(
-                alignment: Alignment.centerRight,
-                child: FutureBuilder(
-                  future: isSubscribed,
-                  builder: (context, snapshot) {
-                    if (snapshot.connectionState == ConnectionState.waiting) {
-                      return const CupertinoActivityIndicator();
-                    }
-                    return ElevatedButton(
-                      onPressed: onPressed,
-                      style: (snapshot.data == true)
-                          ? activeButtonStyle()
-                          : disableButtonStyle(),
-                      child: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          snapshot.data == true
-                              ? const Icon(Icons.done_outline)
-                              : const SizedBox.shrink(),
-                          const SizedBox(width: 5),
-                          snapshot.data == true
-                              ? const Text('Added')
-                              : const Text('Add')
-                        ],
-                      ),
-                    );
-                  },
-                )
-                // ElevatedButton(
-                //   onPressed: () => onPressed,
-                //   style: (isSubscribed == true)
-                //       ? activeButtonStyle()
-                //       : disableButtonStyle(),
-                //   child: Row(
-                //     mainAxisSize: MainAxisSize.min,
-                //     children: [
-                //       FutureBuilder(
-                //           future: isSubscribed,
-                //           builder: (context, snapshot) {
-                //             if (snapshot.connectionState ==
-                //                 ConnectionState.waiting) {
-                //               return CupertinoActivityIndicator();
-                //             }
-                //             return (snapshot.data! == true)
-                //                 ? Text('added')
-                //                 : Text('not');
-                //           }),
-                //       // ValueListenableBuilder(
-                //       //     valueListenable: isSubscribed,
-                //       //     builder: ((context, value, child) =>
-                //       //         (isSubscribed.value)
-                //       //             ? const Icon(
-                //       //                 Icons.done_outline,
-                //       //                 size: 16,
-                //       //               )
-                //       //             : const SizedBox.shrink())),
-                //       const SizedBox(width: 8),
-                //       // Text(
-                //       //   (isSubscribed.value ? 'Added' : 'Add'),
-                //       // ),
-                //     ],
-                //   ),
-                // ),
-                )
+              alignment: Alignment.centerRight,
+              child: FutureBuilder(
+                future: isSubscribed,
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const CupertinoActivityIndicator();
+                  }
+                  var isAdded = snapshot.data;
+                  return StatefulBuilder(
+                    builder: (context, setState) {
+                      return ElevatedButton(
+                        onPressed: () {
+                          setState(() {
+                            isAdded = true;
+                          });
+                          onPressed();
+                        },
+                        style: isAdded
+                            ? activeButtonStyle()
+                            : disableButtonStyle(),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            isAdded
+                                ? const Icon(Icons.done_outline, size: 16)
+                                : const Icon(Icons.add_outlined, size: 16),
+                            const SizedBox(width: 8),
+                            isAdded ? const Text('Added') : const Text('Add')
+                          ],
+                        ),
+                      );
+                    },
+                  );
+                },
+              ),
+            ),
           ],
         ),
       ),

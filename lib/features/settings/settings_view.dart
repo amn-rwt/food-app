@@ -1,12 +1,13 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:tiffin_app/components/custom_appbar.dart';
 import 'package:tiffin_app/components/custom_list_tile.dart';
 import 'package:tiffin_app/constants/color_constants.dart';
 import 'package:tiffin_app/features/about/about_view.dart';
 import 'package:tiffin_app/features/account-settings/account_settings.dart';
-import 'package:tiffin_app/features/login/view/login_view.dart';
 import 'package:tiffin_app/features/order-history/order_history_view.dart';
+import 'package:tiffin_app/features/settings/settings_controller.dart';
 import 'package:tiffin_app/features/vendors/vendors_view.dart';
 
 class SettingsView extends StatelessWidget {
@@ -14,6 +15,7 @@ class SettingsView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final controller = Get.put(SettingsController());
     final user = FirebaseAuth.instance.currentUser;
     return Scaffold(
       // appBar: const CustomAppbar(title: 'Settings'),
@@ -22,7 +24,7 @@ class SettingsView extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            CustomAppbar(title: 'Settings'),
+            const CustomAppbar(title: 'Settings'),
             const SizedBox(height: 10),
             CircleAvatar(
               radius: 50,
@@ -55,16 +57,7 @@ class SettingsView extends StatelessWidget {
                       color: listTileColor,
                     ),
                     child: ListTile(
-                      onTap: () {
-                        FirebaseAuth.instance.signOut().then(
-                              (value) => Navigator.pushReplacement(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => LoginView(),
-                                ),
-                              ),
-                            );
-                      },
+                      onTap: () => controller.logout(context),
                       dense: true,
                       title: const Text('Logout'),
                     ),

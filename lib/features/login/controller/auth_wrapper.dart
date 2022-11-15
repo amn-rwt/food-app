@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:tiffin_app/features/home/home_view.dart';
@@ -8,14 +10,13 @@ class AuthWrapper extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    bool isLoggedIn = false;
+    bool isLoggedIn = true;
     FirebaseAuth.instance.authStateChanges().listen((User? user) {
       if (user == null) {
         isLoggedIn = false;
-      } else {
-        isLoggedIn = true;
+        log('loggedout');
       }
     });
-    return (isLoggedIn) ? const HomeView() : LoginView();
+    return isLoggedIn ? LoginView() : HomeView();
   }
 }

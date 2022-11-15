@@ -36,7 +36,7 @@ class LoginView extends StatelessWidget {
                         (value) => Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => const HomeView(),
+                            builder: (context) => HomeView(),
                           ),
                         ),
                       );

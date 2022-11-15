@@ -17,8 +17,10 @@ class HomeAppBar extends StatelessWidget with PreferredSizeWidget {
         children: [
           CircleAvatar(
             radius: 26,
-            backgroundImage: NetworkImage(user!.photoURL ??
-                'https://cdn1.iconfinder.com/data/icons/random-115/24/person-512.png'),
+            backgroundImage: (user == null)
+                ? const NetworkImage('')
+                : NetworkImage(user.photoURL ??
+                    'https://cdn1.iconfinder.com/data/icons/random-115/24/person-512.png'),
           ),
           Container(
             height: 48,
