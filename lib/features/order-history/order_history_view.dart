@@ -18,8 +18,13 @@ class OrderHistory extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
             const CustomAppbar(title: 'Order History'),
-            TextButton(
-              onPressed: () {},
+            TextButton(     // * show popup to filter history records.
+              onPressed: () => showDialog(
+                  context: context,
+                  builder: (_) {
+                    // return const PopupMenuButton();
+                    return const Dialog();
+                  }),
               child: const Text('This month'), // * open popUp to filter data.
             ),
             StreamBuilder(

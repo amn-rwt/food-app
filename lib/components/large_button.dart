@@ -19,7 +19,7 @@ class LargeButton extends StatelessWidget {
       height: 40,
       width: double.infinity,
       child: ElevatedButton(
-        onPressed: () => onPressed,
+        onPressed: onPressed(),
         style: activeButtonStyle(),
         child: (isLoading)
             ? const CupertinoActivityIndicator(

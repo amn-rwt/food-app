@@ -40,42 +40,52 @@ class TodaysMenu extends StatelessWidget {
                       const SizedBox(height: 20),
                       Flexible(
                         child: StreamBuilder(
-                            stream: snapshot,
-                            builder: (context, snapshot) {
-                              return GridView.builder(
-                                  shrinkWrap: true,
-                                  itemCount: snapshot.data['items'].length,
-                                  physics: const NeverScrollableScrollPhysics(),
-                                  // itemCount: snapshot.data,
-                                  gridDelegate:
-                                      const SliverGridDelegateWithFixedCrossAxisCount(
-                                    crossAxisCount: 4,
-                                    mainAxisSpacing: 15,
-                                    crossAxisSpacing: 10,
-                                  ),
-                                  // itemCount: snapshot.data.length,
+                          stream: snapshot,
+                          builder: (context, snapshot) {
+                            return (snapshot.connectionState ==
+                                    ConnectionState.waiting)
+                                ? const CupertinoActivityIndicator()
+                                : GridView.builder(
+                                    shrinkWrap: true,
+                                    itemCount: snapshot.data['items'].length,
+                                    physics:
+                                        const NeverScrollableScrollPhysics(),
+                                    // itemCount: snapshot.data,
+                                    gridDelegate:
+                                        const SliverGridDelegateWithFixedCrossAxisCount(
+                                      crossAxisCount: 4,
+                                      mainAxisSpacing: 15,
+                                      crossAxisSpacing: 10,
+                                    ),
+                                    // itemCount: snapshot.data.length,
 
-                                  itemBuilder: (context, index) {
-                                    return Column(
-                                      children: [
-                                        Container(
-                                          height: 50,
-                                          width: 50,
-                                          decoration: BoxDecoration(
-                                            borderRadius:
-                                                BorderRadius.circular(3),
-                                            color: Colors.black,
+                                    itemBuilder: (context, index) {
+                                      return Column(
+                                        children: [
+                                          Tooltip(
+                                            message: snapshot.data['items']
+                                                [index],
+                                            child: Container(
+                                              height: 50,
+                                              width: 50,
+                                              decoration: BoxDecoration(
+                                                borderRadius:
+                                                    BorderRadius.circular(3),
+                                                color: Colors.black,
+                                              ),
+                                            ),
                                           ),
-                                        ),
-                                        Text(
-                                          snapshot.data['items'][index],
-                                          // style: mediumTextStyle(),
-                                          overflow: TextOverflow.ellipsis,
-                                        )
-                                      ],
-                                    );
-                                  });
-                            }),
+                                          Text(
+                                            snapshot.data['items'][index],
+                                            // style: mediumTextStyle(),
+                                            overflow: TextOverflow.ellipsis,
+                                          ),
+                                        ],
+                                      );
+                                    },
+                                  );
+                          },
+                        ),
                       ),
                       const SizedBox(height: 30),
                       Row(

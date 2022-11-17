@@ -1,7 +1,4 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
-import 'package:tiffin_app/constants/color_constants.dart';
 
 class CustomListTile extends StatelessWidget {
   final String label;
@@ -19,7 +16,7 @@ class CustomListTile extends StatelessWidget {
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 5),
       decoration: BoxDecoration(
-        color: listTileColor,
+        color: Colors.white,
         borderRadius: BorderRadius.circular(15),
       ),
       child: ListTile(
@@ -34,7 +31,7 @@ class CustomListTile extends StatelessWidget {
             ? const Icon(
                 Icons.arrow_forward_ios,
                 size: 16,
-                color: Colors.black54,
+                color: Colors.black45,
               )
             : const SizedBox(),
       ),

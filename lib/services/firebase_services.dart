@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -23,12 +25,34 @@ class FirebaseServices {
         .doc(vendorReference);
 
     addedVendors.set({
-      'name': '',
-      'days': ['Day1', 'Day2']
+      'days': [],
+      'repeatOrder': false,
+      'cancel_for_holidays': false,
     });
   }
 
-  static Future<bool?> isVendorAdded(String vendorReference) async {
+  static removeVendor(String vendorId) {
+    log('in remove');
+    FirebaseFirestore.instance
+        .collection('users')
+        .doc(FirebaseAuth.instance.currentUser!.uid)
+        .collection('vendors')
+        .doc(vendorId)
+        .delete();
+  }
+
+  static addRemoveVendor(String vendorId) {
+    FirebaseFirestore.instance
+        .collection('users')
+        .doc(FirebaseAuth.instance.currentUser!.uid)
+        .collection('vendors')
+        .doc(vendorId)
+        .get()
+        .then((value) =>
+            value.exists ? removeVendor(vendorId) : addVendor(vendorId));
+  }
+
+  static Future isVendorAdded(String vendorReference) async {
     bool? exists;
     try {
       await FirebaseFirestore.instance
@@ -57,6 +81,23 @@ class FirebaseServices {
       'date': CurrentTime.of(context),
       'amount': amt,
       'vendor': vendorName
-    });
+    }, SetOptions(merge: true));
   }
+
+  // static Future addOrder(
+  //     int amt, String vendorName, BuildContext context) async {
+  //   final docRef = await FirebaseFirestore.instance
+  //       .collection('orders')
+  //       .doc('users/Y6i9eZqtXUSH77HYy4gtDMvSVTQ2/orders/2022-11-17')
+  //       .set({
+  //     'userId': FirebaseAuth.instance.currentUser!.uid,
+  //     'date': CurrentTime.of(context),
+  //     'amount': amt,
+  //     'vendor': vendorName,
+  //   });
+  // await FirebaseFirestore.instance
+  //     .collection('users')
+  //     .doc(FirebaseAuth.instance.currentUser!.uid)
+  //     .collection('orders')
+  //     .add({'orderId': docRef});
 }

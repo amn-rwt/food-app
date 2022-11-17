@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:tiffin_app/components/custom_appbar.dart';
 import 'package:tiffin_app/components/custom_list_tile.dart';
-import 'package:tiffin_app/constants/color_constants.dart';
 import 'package:tiffin_app/features/about/about_view.dart';
 import 'package:tiffin_app/features/account-settings/account_settings.dart';
 import 'package:tiffin_app/features/order-history/order_history_view.dart';
@@ -54,7 +53,7 @@ class SettingsView extends StatelessWidget {
                     margin: const EdgeInsets.symmetric(vertical: 5),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(15),
-                      color: listTileColor,
+                      color: Colors.white,
                     ),
                     child: ListTile(
                       onTap: () => controller.logout(context),

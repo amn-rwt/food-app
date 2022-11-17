@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:tiffin_app/constants/color_constants.dart';
 import 'package:tiffin_app/features/vendors/vendors_view.dart';
+import 'package:tiffin_app/themes_and_styles/button_styles.dart';
 
 class NoVenodrsAddedTile extends StatelessWidget {
   const NoVenodrsAddedTile({super.key});
@@ -8,20 +8,23 @@ class NoVenodrsAddedTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      padding: const EdgeInsets.symmetric(vertical: 30, horizontal: 8),
+      width: double.infinity,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10),
-        color: listTileColor,
+        color: Colors.white,
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          const Text('You haven\'t subscribed to any vendor yet.'),
+          const Text(
+            'You haven\'t added any vendor yet.',
+            style: TextStyle(fontStyle: FontStyle.italic),
+          ),
+          const SizedBox(height: 30),
           ElevatedButton(
-            style: ElevatedButton.styleFrom(
-              backgroundColor: primaryColor,
-              padding: const EdgeInsets.symmetric(horizontal: 24),
-            ),
+            style: activeButtonStyle(),
             onPressed: () => Navigator.push(context,
                 MaterialPageRoute(builder: (context) => VendorsView())),
             child: const Text('Go to vendors'),

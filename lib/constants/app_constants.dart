@@ -7,3 +7,12 @@ List<String> daysOfWeek = [
   'Saturday',
   'Sunday'
 ];
+
+Map<String, String> weekDays = {
+  'Monday': 'M',
+  'Tuesday': 'T',
+  'Wednesday': 'W',
+  'Thursday': 'T',
+  'Friday': 'F',
+  'Saturday': 'S',
+};

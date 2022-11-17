@@ -18,38 +18,32 @@ class VendorsView extends StatelessWidget {
       appBar: const CustomAppbar(title: 'Vendors'),
       body: Padding(
         padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 8),
-        child: FutureBuilder(
-            future: controller.vendors.get(),
-            builder: (context, snapshot) {
-              if (snapshot.hasError) {
-                log('snapshot has error');
-              } else if (snapshot.connectionState == ConnectionState.waiting) {
-                return const Center(child: CupertinoActivityIndicator());
-              } else if (snapshot.connectionState == ConnectionState.done) {
-                log(snapshot.toString());
-                return ListView.separated(
-                  addAutomaticKeepAlives: true,
-                  itemCount: snapshot.data!.docs.length,
-                  separatorBuilder: (context, index) =>
-                      const SizedBox(height: 10),
-                  itemBuilder: (context, index) {
-                    Future<bool?> isAdded = FirebaseServices.isVendorAdded(
-                        snapshot.data!.docs[index].id);
-                    return VendorTile(
-                      onPressed: () => FirebaseServices.addVendor(
-                          snapshot.data!.docs[index].id),
-                      // if added remove else add
-                      isSubscribed: isAdded,
-                      name: snapshot.data!.docs[index]['name'],
-                      phone: snapshot.data!.docs[index]['phone'],
-                      price: snapshot.data!.docs[index]['pricePerTiffin']
-                          .toString(),
-                    );
-                  },
+        child: StreamBuilder(
+          stream: controller.vendors,
+          builder: (context, snapshot) {
+            if (snapshot.hasError) {
+              log('snapshot has error');
+            } else if (snapshot.connectionState == ConnectionState.waiting) {
+              return const Center(child: CupertinoActivityIndicator());
+            }
+            return ListView.separated(
+              addAutomaticKeepAlives: true,
+              itemCount: snapshot.data!.docs.length,
+              separatorBuilder: (context, index) => const SizedBox(height: 10),
+              itemBuilder: (context, index) {
+                Future isAdded = FirebaseServices.isVendorAdded(
+                    snapshot.data!.docs[index].id);
+                return VendorTile(
+                  vendorSnapshot: snapshot.data!.docs[index],
+                  onPressed: () => FirebaseServices.addRemoveVendor(
+                      snapshot.data!.docs[index].id),
+                  // if added remove else add
+                  isSubscribed: isAdded,
                 );
-              }
-              return Container();
-            }),
+              },
+            );
+          },
+        ),
       ),
     );
   }

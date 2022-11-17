@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:tiffin_app/components/home_appbar.dart';
+import 'package:tiffin_app/components/no_vendors_tile.dart';
 import 'package:tiffin_app/components/order_histrory_tile.dart';
 import 'package:tiffin_app/components/todays_menu_tile.dart';
 import 'package:tiffin_app/extensions.dart';
@@ -17,11 +18,9 @@ class HomeView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final controller = Get.put(HomeController(context: context));
-    return SafeArea(
-      bottom: false,
-      child: Scaffold(
-        // appBar: const HomeAppBar(),
-        body: SingleChildScrollView(
+    return Scaffold(
+      body: SafeArea(
+        child: SingleChildScrollView(
           child: Padding(
             padding: const EdgeInsets.fromLTRB(8, 0, 8, 4),
             child: Column(
@@ -29,10 +28,21 @@ class HomeView extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const HomeAppBar(),
-                TodaysMenu(
-                  snapshot: HomeController.todaysMenuStream,
-                  vendorName: controller.vendor,
-                ),
+                StreamBuilder(
+                    stream: controller.hasVendorsAdded,
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return const Center(
+                            child: CupertinoActivityIndicator());
+                      } else {
+                        return snapshot.data!.docs.length > 0
+                            ? TodaysMenu(
+                                snapshot: controller.todaysMenuStream,
+                                vendorName: controller.vendor,
+                              )
+                            : const NoVenodrsAddedTile();
+                      }
+                    }),
                 const SizedBox(height: 15),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -61,35 +71,29 @@ class HomeView extends StatelessWidget {
                 const SizedBox(height: 10),
                 StreamBuilder(
                   stream: controller.orders,
-                  builder: (context, snapshot) => snapshot.connectionState ==
-                          ConnectionState.waiting
-                      ? const CupertinoActivityIndicator()
-                      : Flexible(
-                          child: ListView.separated(
-                            shrinkWrap: true,
-                            physics: const NeverScrollableScrollPhysics(),
-                            itemCount: snapshot.data.docs.length,
-                            separatorBuilder: (context, index) =>
-                                const Divider(),
-                            itemBuilder: ((context, index) {
-                              snapshot.data.docs
-                                  .map((DocumentSnapshot document) {
-                                Map<String, dynamic> data =
-                                    document.data()! as Map<String, dynamic>;
-                              });
-                              // final orderData = snapshot.data;
-                              DateTime dateTime = DateTime.parse(snapshot
-                                  .data.docs[index]['date']
-                                  .toDate()
-                                  .toString());
-                              return OrderHistoryTile(
-                                amount: snapshot.data.docs[index]['amount'],
-                                date: dateTime.dateFromTimestamp,
-                                vendor: snapshot.data.docs[index]['vendor'],
-                              );
-                            }),
-                          ),
-                        ),
+                  builder: (context, snapshot) =>
+                      (snapshot.connectionState == ConnectionState.waiting)
+                          ? const CupertinoActivityIndicator()
+                          : Flexible(
+                              child: ListView.separated(
+                                shrinkWrap: true,
+                                physics: const NeverScrollableScrollPhysics(),
+                                itemCount: snapshot.data.docs.length,
+                                separatorBuilder: (context, index) =>
+                                    const Divider(),
+                                itemBuilder: ((context, index) {
+                                  DateTime dateTime = DateTime.parse(snapshot
+                                      .data.docs[index]['date']
+                                      .toDate()
+                                      .toString());
+                                  return OrderHistoryTile(
+                                    amount: snapshot.data.docs[index]['amount'],
+                                    date: dateTime.dateFromTimestamp,
+                                    vendor: snapshot.data.docs[index]['vendor'],
+                                  );
+                                }),
+                              ),
+                            ),
                 ),
               ],
             ),

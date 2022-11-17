@@ -1,3 +1,6 @@
+import 'dart:developer';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:tiffin_app/themes_and_styles/text_styles.dart';
@@ -5,24 +8,24 @@ import 'package:tiffin_app/features/order-settings/order_settings_view.dart';
 import 'package:tiffin_app/themes_and_styles/button_styles.dart';
 
 class VendorTile extends StatelessWidget {
+  final QueryDocumentSnapshot vendorSnapshot;
   final Future isSubscribed;
-  final String name;
-  final String phone;
-  final String price;
   final VoidCallback onPressed;
-  const VendorTile(
-      {super.key,
-      required this.isSubscribed,
-      required this.name,
-      required this.onPressed,
-      required this.phone,
-      required this.price});
+  const VendorTile({
+    super.key,
+    required this.vendorSnapshot,
+    required this.isSubscribed,
+    required this.onPressed,
+  });
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => Navigator.push(context,
-          MaterialPageRoute(builder: (context) => const OrderSettings())),
+      onTap: () => Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) =>
+                  OrderSettings(vendorId: vendorSnapshot.id))),
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
         decoration: BoxDecoration(
@@ -33,16 +36,16 @@ class VendorTile extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              name,
+              vendorSnapshot['name'],
               style: headingTextStyle(),
             ),
             Text(
-              phone,
+              vendorSnapshot['phone'],
               style: subTextStyle(),
             ),
             Text(
-              'Price: $price',
-              style: const TextStyle(fontSize: 12, fontStyle: FontStyle.italic),
+              'Price: ${vendorSnapshot['pricePerTiffin']}',
+              style: const TextStyle(fontSize: 12),
             ), //${pricePerTiffin}
             Align(
               alignment: Alignment.centerRight,
@@ -57,10 +60,10 @@ class VendorTile extends StatelessWidget {
                     builder: (context, setState) {
                       return ElevatedButton(
                         onPressed: () {
-                          setState(() {
-                            isAdded = true;
-                          });
                           onPressed();
+                          setState(() {
+                            isAdded = !isAdded;
+                          });
                         },
                         style: isAdded
                             ? activeButtonStyle()
