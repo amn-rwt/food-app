@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:tiffin_app/constants/color_constants.dart';
@@ -42,48 +44,55 @@ class TodaysMenu extends StatelessWidget {
                         child: StreamBuilder(
                           stream: snapshot,
                           builder: (context, snapshot) {
+                            snapshot.data == 0
+                                ? log('null data')
+                                : log('has data');
                             return (snapshot.connectionState ==
                                     ConnectionState.waiting)
                                 ? const CupertinoActivityIndicator()
-                                : GridView.builder(
-                                    shrinkWrap: true,
-                                    itemCount: snapshot.data['items'].length,
-                                    physics:
-                                        const NeverScrollableScrollPhysics(),
-                                    // itemCount: snapshot.data,
-                                    gridDelegate:
-                                        const SliverGridDelegateWithFixedCrossAxisCount(
-                                      crossAxisCount: 4,
-                                      mainAxisSpacing: 15,
-                                      crossAxisSpacing: 10,
-                                    ),
-                                    // itemCount: snapshot.data.length,
+                                : (snapshot.data == null)
+                                    ? const Text('No menu')
+                                    : GridView.builder(
+                                        shrinkWrap: true,
+                                        itemCount:
+                                            snapshot.data['items'].length,
+                                        physics:
+                                            const NeverScrollableScrollPhysics(),
+                                        // itemCount: snapshot.data,
+                                        gridDelegate:
+                                            const SliverGridDelegateWithFixedCrossAxisCount(
+                                          crossAxisCount: 4,
+                                          mainAxisSpacing: 15,
+                                          crossAxisSpacing: 10,
+                                        ),
+                                        // itemCount: snapshot.data.length,
 
-                                    itemBuilder: (context, index) {
-                                      return Column(
-                                        children: [
-                                          Tooltip(
-                                            message: snapshot.data['items']
-                                                [index],
-                                            child: Container(
-                                              height: 50,
-                                              width: 50,
-                                              decoration: BoxDecoration(
-                                                borderRadius:
-                                                    BorderRadius.circular(3),
-                                                color: Colors.black,
+                                        itemBuilder: (context, index) {
+                                          return Column(
+                                            children: [
+                                              Tooltip(
+                                                message: snapshot.data['items']
+                                                    [index],
+                                                child: Container(
+                                                  height: 50,
+                                                  width: 50,
+                                                  decoration: BoxDecoration(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            3),
+                                                    color: Colors.black,
+                                                  ),
+                                                ),
                                               ),
-                                            ),
-                                          ),
-                                          Text(
-                                            snapshot.data['items'][index],
-                                            // style: mediumTextStyle(),
-                                            overflow: TextOverflow.ellipsis,
-                                          ),
-                                        ],
+                                              Text(
+                                                snapshot.data['items'][index],
+                                                // style: mediumTextStyle(),
+                                                overflow: TextOverflow.ellipsis,
+                                              ),
+                                            ],
+                                          );
+                                        },
                                       );
-                                    },
-                                  );
                           },
                         ),
                       ),

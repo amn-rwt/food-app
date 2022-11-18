@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -35,12 +37,31 @@ class HomeView extends StatelessWidget {
                         return const Center(
                             child: CupertinoActivityIndicator());
                       } else {
-                        return snapshot.data!.docs.length > 0
-                            ? TodaysMenu(
-                                snapshot: controller.todaysMenuStream,
-                                vendorName: controller.vendor,
+                        log('vendors : ${snapshot.data.size.toString()}');
+                        // return snapshot.data.size != 0
+                        // * size == 1 ? TodaysMenu() : PageView(children: multipleTodaysMenus)
+                        // ? TodaysMenu(
+                        //     snapshot: controller.todaysMenuStream,
+                        //     vendorName: controller.vendor,
+                        //   )
+                        // : const NoVenodrsAddedTile();
+
+                        return (snapshot.data.size > 1)
+                            ? SizedBox(
+                                height: 300,
+                                child: PageView.builder(
+                                    // physics: NeverScrollableScrollPhysics(),
+                                    scrollDirection: Axis.horizontal,
+                                    itemCount: snapshot.data.size,
+                                    itemBuilder: (context, index) => TodaysMenu(
+                                          vendorName: controller.vendor,
+                                          snapshot: controller.todaysMenuStream,
+                                        )),
                               )
-                            : const NoVenodrsAddedTile();
+                            : TodaysMenu(
+                                vendorName: controller.vendor,
+                                snapshot: controller.todaysMenuStream,
+                              );
                       }
                     }),
                 const SizedBox(height: 15),
@@ -87,7 +108,7 @@ class HomeView extends StatelessWidget {
                                       .toDate()
                                       .toString());
                                   return OrderHistoryTile(
-                                    amount: snapshot.data.docs[index]['amount'],
+                                    amount: snapshot.data.docs[index]['quantity'],
                                     date: dateTime.dateFromTimestamp,
                                     vendor: snapshot.data.docs[index]['vendor'],
                                   );

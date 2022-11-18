@@ -11,40 +11,34 @@ class HomeController extends GetxController {
 
   bool? isAdded;
 
-  @override
-  void onReady() {
-    getDateTimeData();
-    super.onReady();
-  }
-
   late String today;
-
-  getDateTimeData() async {
-    final DateTime day = CurrentTime.of(context)!;
-    today = daysOfWeek[day.weekday - 1];
-  }
 
   late Stream todaysMenuStream = FirebaseFirestore.instance
       .collection('vendors')
-      .doc('sZBn6ZllBWTMkRFq1MwXoBM9Iz42') // * custom vendor id
+      .doc('DzhfXo7ySwTgtbWSwjMfjEwgQNg1') // * custom vendor id
       .collection('menu')
-      .doc(today) // * custom day
+      .doc(CurrentTime.weekday(context)) // * custom day
       .snapshots();
 
   Stream vendor = FirebaseFirestore.instance
       .collection('vendors')
-      .doc('sZBn6ZllBWTMkRFq1MwXoBM9Iz42')
+      .doc('DzhfXo7ySwTgtbWSwjMfjEwgQNg1')
       .snapshots();
 
-  Stream orders = FirebaseFirestore.instance
-      .collection('users')
-      .doc(FirebaseAuth.instance.currentUser!.uid)
-      .collection('orders')
-      .snapshots();
+  // Stream orders = FirebaseFirestore.instance
+  //     .collection('users')
+  //     .doc(FirebaseAuth.instance.currentUser!.uid)
+  //     .collection('orders')
+  //     .snapshots();
 
   Stream hasVendorsAdded = FirebaseFirestore.instance
       .collection('users')
       .doc(FirebaseAuth.instance.currentUser!.uid)
       .collection('vendors')
+      .snapshots();
+
+  Stream orders = FirebaseFirestore.instance
+      .collection('orders')
+      .where('user', isEqualTo: FirebaseAuth.instance.currentUser!.uid)
       .snapshots();
 }

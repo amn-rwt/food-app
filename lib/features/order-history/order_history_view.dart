@@ -18,7 +18,8 @@ class OrderHistory extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
             const CustomAppbar(title: 'Order History'),
-            TextButton(     // * show popup to filter history records.
+            TextButton(
+              // * show popup to filter history records.
               onPressed: () => showDialog(
                   context: context,
                   builder: (_) {
@@ -40,7 +41,7 @@ class OrderHistory extends StatelessWidget {
                           separatorBuilder: ((context, index) =>
                               const Divider()),
                           itemBuilder: (context, index) => OrderHistoryTile(
-                            amount: snapshot.data.docs[index]['amount'],
+                            amount: snapshot.data.docs[index]['quantity'],
                             date: DateTime.parse(snapshot
                                     .data.docs[index]['date']
                                     .toDate()

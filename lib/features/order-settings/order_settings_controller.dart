@@ -20,9 +20,9 @@ class OrderSettingsController extends GetxController {
 
   Stream vendorSettingStream = FirebaseFirestore.instance
       .collection('users')
-      .doc('Y6i9eZqtXUSH77HYy4gtDMvSVTQ2')
+      .doc(FirebaseAuth.instance.currentUser!.uid)
       .collection('vendors')
-      .doc('sZBn6ZllBWTMkRFq1MwXoBM9Iz42')
+      .doc('DzhfXo7ySwTgtbWSwjMfjEwgQNg1')
       .snapshots();
 
   ValueNotifier<bool> repeatOrder = ValueNotifier(true);

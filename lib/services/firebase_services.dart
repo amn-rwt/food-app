@@ -73,15 +73,15 @@ class FirebaseServices {
   static Future addOrder(
       int amt, String vendorName, BuildContext context) async {
     FirebaseFirestore.instance
-        .collection('users')
-        .doc(FirebaseAuth.instance.currentUser!.uid)
         .collection('orders')
-        .doc(CurrentTime.of(context).toString().substring(0, 10))
+        .doc(FirebaseAuth.instance.currentUser!.uid +
+            CurrentTime.of(context).toString().substring(0, 10))
         .set({
-      'date': CurrentTime.of(context),
-      'amount': amt,
-      'vendor': vendorName
-    }, SetOptions(merge: true));
+      'date': DateTime.parse(CurrentTime.of(context).toString()),
+      'vendor': vendorName,
+      'quantity': amt,
+      'user': FirebaseAuth.instance.currentUser!.uid,
+    });
   }
 
   // static Future addOrder(
