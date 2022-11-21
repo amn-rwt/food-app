@@ -2,6 +2,9 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:tiffin_app/components/custom_appbar.dart';
+import 'package:tiffin_app/components/day_radio_button.dart';
+import 'package:tiffin_app/constants/app_constants.dart';
+import 'package:tiffin_app/themes_and_styles/text_styles.dart';
 
 class VendorSettingView extends StatelessWidget {
   const VendorSettingView({super.key});
@@ -20,32 +23,34 @@ class VendorSettingView extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    const Text('Repeat Orders'),
+                    Text(
+                      'Repeat Orders',
+                      style: headingTextStyle(),
+                    ),
                     Checkbox(value: true, onChanged: (value) {}),
                   ],
                 ),
-                Expanded(
+                Flexible(
                   child: ListView.separated(
-                    separatorBuilder: (context, index) => const SizedBox(width: 10),
+                    separatorBuilder: (context, index) =>
+                        const SizedBox(width: 10),
                     scrollDirection: Axis.horizontal,
                     physics: const NeverScrollableScrollPhysics(),
                     shrinkWrap: true,
-                    itemCount: 5,
+                    itemCount: 7,
                     itemBuilder: (context, index) {
                       log('here');
-                      return Container(
-                        height: 20,
-                        width: 20,
-                        decoration: const BoxDecoration(
-                            shape: BoxShape.circle, color: Colors.red),
-                      );
+                      return DayRadioButton(day: index, isActive: false);
                     },
                   ),
                 ),
+                Text('data')
               ],
             ),
           ),
-          Text('data')
+          Column(
+            children: [Text('here')],
+          )
         ],
       ),
     );

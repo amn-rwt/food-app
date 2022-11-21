@@ -14,7 +14,6 @@ class AuthWrapper extends StatelessWidget {
     FirebaseAuth.instance.authStateChanges().listen((User? user) {
       if (user == null) {
         isLoggedIn = false;
-        log('loggedout');
       }
     });
     return isLoggedIn ? LoginView() : HomeView();

@@ -19,7 +19,7 @@ class OrderSettings extends StatelessWidget {
       body: Padding(
         padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 16),
         child: StreamBuilder(
-            stream: controller.vendorSettingStream,
+            stream: controller.vendorSettingStream(vendorId),
             builder: (context, snapshot) {
               final snapData = snapshot.data['days'];
               return Column(
@@ -111,7 +111,7 @@ class OrderSettings extends StatelessWidget {
                       style: ElevatedButton.styleFrom(
                         backgroundColor: primaryColor,
                       ),
-                      onPressed: () => controller.updateVendorSettings(),
+                      onPressed: () => controller.updateVendorSettings(vendorId),
                       child: const Text('SAVE'),
                     ),
                   ),

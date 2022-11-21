@@ -5,6 +5,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:tiffin_app/features/home/home_view.dart';
 import 'package:tiffin_app/features/login/view/login_view.dart';
 import 'package:tiffin_app/features/order-settings/vendor_settings_view.dart';
+import 'package:tiffin_app/models/vendor.dart';
 import 'package:tiffin_app/services/time_provider.dart';
 import 'package:tiffin_app/constants/color_constants.dart';
 import 'features/login/controller/auth_wrapper.dart';
@@ -43,7 +44,7 @@ class MyApp extends StatelessWidget {
         return CurrentTime(child: child ?? const SizedBox());
       },
       // home: const AuthWrapper(),
-      home: const VendorSettingView(),
+      home: const AuthWrapper(),
       // home: const Test(),
       debugShowCheckedModeBanner: false,
     );

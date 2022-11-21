@@ -44,14 +44,12 @@ class TodaysMenu extends StatelessWidget {
                         child: StreamBuilder(
                           stream: snapshot,
                           builder: (context, snapshot) {
-                            snapshot.data == 0
-                                ? log('null data')
-                                : log('has data');
                             return (snapshot.connectionState ==
                                     ConnectionState.waiting)
                                 ? const CupertinoActivityIndicator()
-                                : (snapshot.data == null)
-                                    ? const Text('No menu')
+                                : (!snapshot.data.exists)
+                                    ? const Text(
+                                        'The menu for the day hasn\'t been set yet.')
                                     : GridView.builder(
                                         shrinkWrap: true,
                                         itemCount:

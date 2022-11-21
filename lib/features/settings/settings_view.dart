@@ -4,10 +4,11 @@ import 'package:get/get.dart';
 import 'package:tiffin_app/components/custom_appbar.dart';
 import 'package:tiffin_app/components/custom_list_tile.dart';
 import 'package:tiffin_app/features/about/about_view.dart';
-import 'package:tiffin_app/features/account-settings/account_settings.dart';
 import 'package:tiffin_app/features/order-history/order_history_view.dart';
 import 'package:tiffin_app/features/settings/settings_controller.dart';
 import 'package:tiffin_app/features/vendors/vendors_view.dart';
+
+import '../account-settings/account_settings_view.dart';
 
 class SettingsView extends StatelessWidget {
   const SettingsView({super.key});
@@ -45,8 +46,9 @@ class SettingsView extends StatelessWidget {
                 children: [
                   const CustomListTile(
                       label: 'Order History', navigateTo: OrderHistory()),
-                  const CustomListTile(
-                      label: 'Account Settings', navigateTo: AccountSettings()),
+                  CustomListTile(
+                      label: 'Account Settings',
+                      navigateTo: AccountSettingsView()),
                   CustomListTile(label: 'Vendors', navigateTo: VendorsView()),
                   const CustomListTile(label: 'About', navigateTo: AboutView()),
                   Container(

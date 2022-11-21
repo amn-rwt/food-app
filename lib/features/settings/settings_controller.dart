@@ -8,5 +8,7 @@ import 'package:tiffin_app/constants/color_constants.dart';
 import '../login/view/login_view.dart';
 
 class SettingsController extends GetxController {
-  void logout(BuildContext context) => Get.offAll(LoginView());
+  void logout(BuildContext context) {
+    FirebaseAuth.instance.signOut().then((value) => Get.offAll(LoginView()));
+  }
 }

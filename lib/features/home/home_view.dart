@@ -31,39 +31,46 @@ class HomeView extends StatelessWidget {
               children: [
                 const HomeAppBar(),
                 StreamBuilder(
-                    stream: controller.hasVendorsAdded,
-                    builder: (context, snapshot) {
-                      if (snapshot.connectionState == ConnectionState.waiting) {
-                        return const Center(
-                            child: CupertinoActivityIndicator());
-                      } else {
-                        log('vendors : ${snapshot.data.size.toString()}');
-                        // return snapshot.data.size != 0
-                        // * size == 1 ? TodaysMenu() : PageView(children: multipleTodaysMenus)
-                        // ? TodaysMenu(
-                        //     snapshot: controller.todaysMenuStream,
-                        //     vendorName: controller.vendor,
-                        //   )
-                        // : const NoVenodrsAddedTile();
-
-                        return (snapshot.data.size > 1)
-                            ? SizedBox(
-                                height: 300,
-                                child: PageView.builder(
-                                    // physics: NeverScrollableScrollPhysics(),
-                                    scrollDirection: Axis.horizontal,
-                                    itemCount: snapshot.data.size,
-                                    itemBuilder: (context, index) => TodaysMenu(
-                                          vendorName: controller.vendor,
-                                          snapshot: controller.todaysMenuStream,
-                                        )),
-                              )
-                            : TodaysMenu(
-                                vendorName: controller.vendor,
-                                snapshot: controller.todaysMenuStream,
-                              );
+                  stream: controller.vendors,
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return const CupertinoActivityIndicator();
+                    }
+                    final docs = snapshot.data!.docs;
+                    if (docs.isEmpty) {
+                      return const NoVenodrsAddedTile();
+                    }
+                    // print(docs.first.id);
+                    // return Text('Some text');
+                    else if (docs.length == 1) {
+                      log('here');
+                      return TodaysMenu(
+                          vendorName: controller.vendor(docs.first.id),
+                          snapshot: controller.todaysMenuStream(docs.first.id));
+                    } else if (docs.length > 1) {
+                      log('multi vendors');
+                      for (int i = 0; i < docs.length; i++) {
+                        (controller.listOfVendors.contains(docs[i].id))
+                            ? controller.listOfVendors.remove(docs[i].id)
+                            : controller.listOfVendors.add('${docs[i].id}');
                       }
-                    }),
+                      // return const Text('more than one vendor added');
+                      return SizedBox(
+                        height: 300,
+                        child: PageView.builder(
+                            scrollDirection: Axis.horizontal,
+                            itemCount: snapshot.data!.docs.length,
+                            itemBuilder: (context, index) => TodaysMenu(
+                                  vendorName: controller
+                                      .vendor(controller.listOfVendors[index]),
+                                  snapshot: controller.todaysMenuStream(
+                                      controller.listOfVendors[index]),
+                                )),
+                      );
+                    }
+                    return const Text('Something went wrong');
+                  },
+                ),
                 const SizedBox(height: 15),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -92,25 +99,40 @@ class HomeView extends StatelessWidget {
                 const SizedBox(height: 10),
                 StreamBuilder(
                   stream: controller.orders,
-                  builder: (context, snapshot) =>
-                      (snapshot.connectionState == ConnectionState.waiting)
-                          ? const CupertinoActivityIndicator()
+                  builder: (context, snapshot) => (snapshot.connectionState ==
+                          ConnectionState.waiting)
+                      ? const CupertinoActivityIndicator()
+                      : (snapshot.data!.docs.length == 0)
+                          ? Column(
+                              mainAxisSize: MainAxisSize.max,
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.stretch,
+                              children: [
+                                Image.asset('lib/assets/no_order_recieved.png'),
+                                Text(
+                                  'You haven\'t placed any orders yet.',
+                                  style: italicSmallTextStyle(),
+                                  textAlign: TextAlign.center,
+                                )
+                              ],
+                            )
                           : Flexible(
                               child: ListView.separated(
                                 shrinkWrap: true,
                                 physics: const NeverScrollableScrollPhysics(),
-                                itemCount: snapshot.data.docs.length,
+                                itemCount: snapshot.data!.docs.length,
                                 separatorBuilder: (context, index) =>
                                     const Divider(),
                                 itemBuilder: ((context, index) {
-                                  DateTime dateTime = DateTime.parse(snapshot
-                                      .data.docs[index]['date']
-                                      .toDate()
-                                      .toString());
+                                  DateTime dateTime = DateTime.parse(
+                                      snapshot.data!.docs[index]['date']);
+
                                   return OrderHistoryTile(
-                                    amount: snapshot.data.docs[index]['quantity'],
+                                    amount: snapshot.data!.docs[index]
+                                        ['quantity'],
                                     date: dateTime.dateFromTimestamp,
-                                    vendor: snapshot.data.docs[index]['vendor'],
+                                    vendor: snapshot.data!.docs[index]
+                                        ['vendor'],
                                   );
                                 }),
                               ),

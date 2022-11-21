@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:tiffin_app/services/time_provider.dart';
 
 class FirebaseServices {
@@ -72,16 +73,33 @@ class FirebaseServices {
 
   static Future addOrder(
       int amt, String vendorName, BuildContext context) async {
+    final doc = await FirebaseFirestore.instance
+        .collection('orders')
+        .where('date',
+            isEqualTo: CurrentTime.of(context).toString().substring(0, 10))
+        .get();
+
+    log(vendorName + CurrentTime.of(context).toString().substring(0, 10));
+
+    (doc.isBlank!) ? log('doc exists') : log('doc not present');
     FirebaseFirestore.instance
         .collection('orders')
         .doc(FirebaseAuth.instance.currentUser!.uid +
             CurrentTime.of(context).toString().substring(0, 10))
         .set({
-      'date': DateTime.parse(CurrentTime.of(context).toString()),
+      'date': CurrentTime.of(context).toString().substring(0, 10),
       'vendor': vendorName,
       'quantity': amt,
       'user': FirebaseAuth.instance.currentUser!.uid,
-    });
+    }).then(
+      (value) => Get.snackbar(
+        'Order Placed',
+        'Order has been placed for $amt from $vendorName',
+        animationDuration: const Duration(milliseconds: 400),
+        isDismissible: true,
+        dismissDirection: DismissDirection.horizontal,
+      ),
+    );
   }
 
   // static Future addOrder(

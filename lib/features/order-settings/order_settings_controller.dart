@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
+import 'package:tiffin_app/constants/app_constants.dart';
 
 class OrderSettingsController extends GetxController {
   final String? vendorId;
@@ -13,28 +14,28 @@ class OrderSettingsController extends GetxController {
   List<String> repeatOrderDays = [];
 
   void addDayToRepeatOrderList(int day) {
-    repeatOrderDays.contains(day)
-        ? repeatOrderDays.remove(day)
-        : repeatOrderDays.add(day.toString());
+    repeatOrderDays.contains(daysOfWeek[day])
+        ? repeatOrderDays.remove(daysOfWeek[day])
+        : repeatOrderDays.add(daysOfWeek[day]);
   }
 
-  Stream vendorSettingStream = FirebaseFirestore.instance
+  Stream vendorSettingStream(String vendorId) => FirebaseFirestore.instance
       .collection('users')
       .doc(FirebaseAuth.instance.currentUser!.uid)
       .collection('vendors')
-      .doc('DzhfXo7ySwTgtbWSwjMfjEwgQNg1')
+      .doc(vendorId)
       .snapshots();
 
   ValueNotifier<bool> repeatOrder = ValueNotifier(true);
   ValueNotifier<bool> cancelForHolidays = ValueNotifier(true);
 
-  Future<void> updateVendorSettings() async {
+  Future<void> updateVendorSettings(String vendorId) async {
     log('here');
     FirebaseFirestore.instance
         .collection('users')
         .doc(FirebaseAuth.instance.currentUser!.uid)
         .collection('vendors')
-        .doc('sZBn6ZllBWTMkRFq1MwXoBM9Iz42')
+        .doc(vendorId)
         .set({
       'days': repeatOrderDays,
       'repeatOrder': repeatOrder.value,
