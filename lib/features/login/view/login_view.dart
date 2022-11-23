@@ -14,7 +14,6 @@ class LoginView extends StatelessWidget {
   final controller = Get.put(LoginController());
   @override
   Widget build(BuildContext context) {
-    log(FirebaseAuth.instance.currentUser?.uid ?? 'here');
     ValueNotifier<bool> isLoading = ValueNotifier(false);
     return Scaffold(
       body: SafeArea(

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:tiffin_app/constants/app_constants.dart';
 import 'package:tiffin_app/constants/color_constants.dart';
 import 'package:tiffin_app/features/order-settings/order_settings_controller.dart';
 
@@ -24,6 +25,7 @@ class _DayRadioButtonState extends State<DayRadioButton> {
         });
       },
       child: Container(
+        // height: 200,
         margin: const EdgeInsets.symmetric(horizontal: 4),
         padding: const EdgeInsets.all(10),
         decoration: BoxDecoration(
@@ -32,7 +34,7 @@ class _DayRadioButtonState extends State<DayRadioButton> {
           shape: BoxShape.circle,
         ),
         child: Text(
-          widget.day.toString(),
+          daysOfWeek[widget.day].substring(0, 1),
           style: TextStyle(
             color: (widget.isActive) ? Colors.white : Colors.black,
           ),

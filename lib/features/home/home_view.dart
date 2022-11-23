@@ -52,20 +52,21 @@ class HomeView extends StatelessWidget {
                       for (int i = 0; i < docs.length; i++) {
                         (controller.listOfVendors.contains(docs[i].id))
                             ? controller.listOfVendors.remove(docs[i].id)
-                            : controller.listOfVendors.add('${docs[i].id}');
+                            : controller.listOfVendors.add(docs[i].id);
                       }
                       // return const Text('more than one vendor added');
                       return SizedBox(
                         height: 300,
                         child: PageView.builder(
-                            scrollDirection: Axis.horizontal,
-                            itemCount: snapshot.data!.docs.length,
-                            itemBuilder: (context, index) => TodaysMenu(
-                                  vendorName: controller
-                                      .vendor(controller.listOfVendors[index]),
-                                  snapshot: controller.todaysMenuStream(
-                                      controller.listOfVendors[index]),
-                                )),
+                          scrollDirection: Axis.horizontal,
+                          itemCount: snapshot.data!.docs.length,
+                          itemBuilder: (context, index) => TodaysMenu(
+                            vendorName: controller
+                                .vendor(controller.listOfVendors[index]),
+                            snapshot: controller.todaysMenuStream(
+                                controller.listOfVendors[index]),
+                          ),
+                        ),
                       );
                     }
                     return const Text('Something went wrong');
@@ -102,9 +103,9 @@ class HomeView extends StatelessWidget {
                   builder: (context, snapshot) => (snapshot.connectionState ==
                           ConnectionState.waiting)
                       ? const CupertinoActivityIndicator()
-                      : (snapshot.data!.docs.length == 0)
+                      : (snapshot.data!.docs.isEmpty)
                           ? Column(
-                              mainAxisSize: MainAxisSize.max,
+                              mainAxisSize: MainAxisSize.min,
                               mainAxisAlignment: MainAxisAlignment.center,
                               crossAxisAlignment: CrossAxisAlignment.stretch,
                               children: [

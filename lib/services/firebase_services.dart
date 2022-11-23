@@ -7,10 +7,10 @@ import 'package:get/get.dart';
 import 'package:tiffin_app/services/time_provider.dart';
 
 class FirebaseServices {
-  static void addUser(String username, String email) {
-    DocumentReference users = FirebaseFirestore.instance
-        .collection('users')
-        .doc(FirebaseAuth.instance.currentUser!.uid);
+  final uid = FirebaseAuth.instance.currentUser!.uid;
+  void addUser(String username, String email) {
+    DocumentReference users =
+        FirebaseFirestore.instance.collection('users').doc(uid);
 
     users.set({
       'name': username,
@@ -18,34 +18,10 @@ class FirebaseServices {
     });
   }
 
-  static addVendor(String vendorReference) {
-    DocumentReference addedVendors = FirebaseFirestore.instance
-        .collection('users')
-        .doc(FirebaseAuth.instance.currentUser!.uid)
-        .collection('vendors')
-        .doc(vendorReference);
-
-    addedVendors.set({
-      'days': [],
-      'repeatOrder': false,
-      'cancel_for_holidays': false,
-    });
-  }
-
-  static removeVendor(String vendorId) {
-    log('in remove');
+  addRemoveVendor(String vendorId) {
     FirebaseFirestore.instance
         .collection('users')
-        .doc(FirebaseAuth.instance.currentUser!.uid)
-        .collection('vendors')
-        .doc(vendorId)
-        .delete();
-  }
-
-  static addRemoveVendor(String vendorId) {
-    FirebaseFirestore.instance
-        .collection('users')
-        .doc(FirebaseAuth.instance.currentUser!.uid)
+        .doc(uid)
         .collection('vendors')
         .doc(vendorId)
         .get()
@@ -53,12 +29,37 @@ class FirebaseServices {
             value.exists ? removeVendor(vendorId) : addVendor(vendorId));
   }
 
-  static Future isVendorAdded(String vendorReference) async {
+  addVendor(String vendorReference) {
+    DocumentReference addedVendors = FirebaseFirestore.instance
+        .collection('users')
+        .doc(uid)
+        .collection('vendors')
+        .doc(vendorReference);
+
+    addedVendors.set({
+      'days': [],
+      'repeat_order': false,
+      'cancel_for_holidays': false,
+      'show_reminder': false,
+    });
+  }
+
+  removeVendor(String vendorId) {
+    log('in remove');
+    FirebaseFirestore.instance
+        .collection('users')
+        .doc(uid)
+        .collection('vendors')
+        .doc(vendorId)
+        .delete();
+  }
+
+  Future isVendorAdded(String vendorReference) async {
     bool? exists;
     try {
       await FirebaseFirestore.instance
           .collection('users')
-          .doc(FirebaseAuth.instance.currentUser!.uid)
+          .doc(uid)
           .collection('vendors')
           .doc(vendorReference)
           .get()
@@ -71,51 +72,31 @@ class FirebaseServices {
     }
   }
 
-  static Future addOrder(
-      int amt, String vendorName, BuildContext context) async {
+  Future addOrder(int amt, String vendorName, BuildContext context) async {
     final doc = await FirebaseFirestore.instance
         .collection('orders')
-        .where('date',
-            isEqualTo: CurrentTime.of(context).toString().substring(0, 10))
+        .where('user', isEqualTo: uid)
+        .where('vendor', isEqualTo: vendorName)
+        .where('date', isEqualTo: DateTime.now().toString().substring(0, 10))
         .get();
 
-    log(vendorName + CurrentTime.of(context).toString().substring(0, 10));
-
-    (doc.isBlank!) ? log('doc exists') : log('doc not present');
-    FirebaseFirestore.instance
-        .collection('orders')
-        .doc(FirebaseAuth.instance.currentUser!.uid +
-            CurrentTime.of(context).toString().substring(0, 10))
-        .set({
-      'date': CurrentTime.of(context).toString().substring(0, 10),
-      'vendor': vendorName,
-      'quantity': amt,
-      'user': FirebaseAuth.instance.currentUser!.uid,
-    }).then(
-      (value) => Get.snackbar(
-        'Order Placed',
-        'Order has been placed for $amt from $vendorName',
-        animationDuration: const Duration(milliseconds: 400),
-        isDismissible: true,
-        dismissDirection: DismissDirection.horizontal,
-      ),
-    );
+    if (doc.docs.isEmpty) {
+      FirebaseFirestore.instance.collection('orders').add({
+        'user': uid,
+        'vendor': vendorName,
+        'quantity': amt,
+        'date': CurrentTime.of(context).toString().substring(0, 10),
+      }).then((value) => Get.snackbar('Order Placed',
+          'Order has been placed for $amt tiffins from $vendorName.'));
+    } else {
+      String id = doc.docs.first.id;
+      FirebaseFirestore.instance
+          .collection('orders')
+          .doc(id)
+          .set({'quantity': amt}, SetOptions(merge: true)).then((value) =>
+              Get.snackbar('Order Placed',
+                  'Order has been placed for $amt tiffins from $vendorName.'));
+      ;
+    }
   }
-
-  // static Future addOrder(
-  //     int amt, String vendorName, BuildContext context) async {
-  //   final docRef = await FirebaseFirestore.instance
-  //       .collection('orders')
-  //       .doc('users/Y6i9eZqtXUSH77HYy4gtDMvSVTQ2/orders/2022-11-17')
-  //       .set({
-  //     'userId': FirebaseAuth.instance.currentUser!.uid,
-  //     'date': CurrentTime.of(context),
-  //     'amount': amt,
-  //     'vendor': vendorName,
-  //   });
-  // await FirebaseFirestore.instance
-  //     .collection('users')
-  //     .doc(FirebaseAuth.instance.currentUser!.uid)
-  //     .collection('orders')
-  //     .add({'orderId': docRef});
 }

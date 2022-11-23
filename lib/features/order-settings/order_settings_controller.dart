@@ -1,15 +1,17 @@
 import 'dart:developer';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/material.dart';
-import 'package:get/get_state_manager/get_state_manager.dart';
+import 'package:get/get.dart';
 import 'package:tiffin_app/constants/app_constants.dart';
 
 class OrderSettingsController extends GetxController {
   final String? vendorId;
 
   OrderSettingsController({this.vendorId});
+
+  RxBool repeatOrder = false.obs;
+  RxBool cancelForHolidays = false.obs;
+  RxBool showReminder = false.obs;
 
   List<String> repeatOrderDays = [];
 
@@ -26,9 +28,6 @@ class OrderSettingsController extends GetxController {
       .doc(vendorId)
       .snapshots();
 
-  ValueNotifier<bool> repeatOrder = ValueNotifier(true);
-  ValueNotifier<bool> cancelForHolidays = ValueNotifier(true);
-
   Future<void> updateVendorSettings(String vendorId) async {
     log('here');
     FirebaseFirestore.instance
@@ -38,8 +37,9 @@ class OrderSettingsController extends GetxController {
         .doc(vendorId)
         .set({
       'days': repeatOrderDays,
-      'repeatOrder': repeatOrder.value,
-      'cancel_for_holidays': false,
-    });
+      'repeat_order': repeatOrder.value,
+      'cancel_for_holidays': cancelForHolidays.value,
+      'show_reminder': showReminder.value,
+    }, SetOptions(merge: true));
   }
 }

@@ -11,9 +11,8 @@ import 'compact_button.dart';
 class TodaysMenu extends StatelessWidget {
   final Stream snapshot;
   final Stream vendorName;
-  const TodaysMenu(
-      {super.key, required this.vendorName, required this.snapshot});
-
+  TodaysMenu({super.key, required this.vendorName, required this.snapshot});
+  final firebaseServices = FirebaseServices();
   @override
   Widget build(BuildContext context) {
     ValueNotifier orderCount = ValueNotifier(1);
@@ -133,7 +132,7 @@ class TodaysMenu extends StatelessWidget {
                           const SizedBox(width: 10),
                           CompactButton(
                             label: 'Order',
-                            onPressed: () => FirebaseServices.addOrder(
+                            onPressed: () => firebaseServices.addOrder(
                                 orderCount.value,
                                 vendorName.data['resturantName'],
                                 context),

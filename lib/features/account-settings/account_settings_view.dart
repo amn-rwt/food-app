@@ -37,7 +37,7 @@ class AccountSettingsView extends StatelessWidget {
             const Spacer(),
             LargeButton(
               label: 'SAVE',
-              onPressed: () => controller.updateProfile(),
+              onPressed: () => controller.updateProfile,
             ),
           ],
         ),

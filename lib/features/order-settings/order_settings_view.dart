@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:tiffin_app/components/custom_appbar.dart';
@@ -21,7 +23,12 @@ class OrderSettings extends StatelessWidget {
         child: StreamBuilder(
             stream: controller.vendorSettingStream(vendorId),
             builder: (context, snapshot) {
+              controller.cancelForHolidays.value =
+                  snapshot.data['cancel_for_holidays'];
+              controller.repeatOrder.value = snapshot.data['repeat_order'];
+              controller.showReminder.value = snapshot.data['show_reminder'];
               final snapData = snapshot.data['days'];
+
               return Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -33,27 +40,26 @@ class OrderSettings extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text('Repeat Order', style: headingTextStyle()),
-                          ValueListenableBuilder(
-                            valueListenable: controller.repeatOrder,
-                            builder: (context, value, child) => Checkbox(
+                          Obx(
+                            () => Checkbox(
                               activeColor: primaryColor,
-                              value: snapshot.data['repeatOrder'],
+                              value: controller.repeatOrder.value,
                               onChanged: (_) {
                                 controller.repeatOrder.value =
                                     !controller.repeatOrder.value;
                               },
                             ),
-                          )
+                          ),
                         ],
                       ),
                       SizedBox(
-                        height: 100,
+                        height: 40,
                         width: double.infinity,
                         child: ListView.builder(
                           shrinkWrap: true,
                           scrollDirection: Axis.horizontal,
                           itemBuilder: (context, index) => DayRadioButton(
-                            day: index + 1,
+                            day: index,
                             isActive: snapData.contains(daysOfWeek[index]),
                           ),
                           itemCount: daysOfWeek.length,
@@ -71,7 +77,18 @@ class OrderSettings extends StatelessWidget {
                             'Cancel order for holidays',
                             style: headingTextStyle(),
                           ),
-                          Checkbox(value: false, onChanged: (value) => !value!)
+                          Obx(() {
+                            // controller.cancelForHolidays.value =
+                            //     snapshot.data['cancel_for_holidays'];
+                            return Checkbox(
+                                activeColor: primaryColor,
+                                value: controller.cancelForHolidays.value,
+                                onChanged: (_) {
+                                  log('onchanged');
+                                  controller.cancelForHolidays.value =
+                                      !controller.cancelForHolidays.value;
+                                });
+                          })
                         ],
                       )
                     ],
@@ -86,9 +103,15 @@ class OrderSettings extends StatelessWidget {
                             'Reminder',
                             style: headingTextStyle(),
                           ),
-                          Checkbox(
-                            value: false,
-                            onChanged: ((value) {}),
+                          Obx(
+                            () => Checkbox(
+                              activeColor: primaryColor,
+                              value: controller.showReminder.value,
+                              onChanged: ((_) {
+                                controller.showReminder.value =
+                                    !controller.showReminder.value;
+                              }),
+                            ),
                           ),
                         ],
                       ),
@@ -111,7 +134,8 @@ class OrderSettings extends StatelessWidget {
                       style: ElevatedButton.styleFrom(
                         backgroundColor: primaryColor,
                       ),
-                      onPressed: () => controller.updateVendorSettings(vendorId),
+                      onPressed: () =>
+                          controller.updateVendorSettings(vendorId),
                       child: const Text('SAVE'),
                     ),
                   ),

@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -12,6 +13,7 @@ class VendorsView extends StatelessWidget {
   VendorsView({super.key});
 
   final controller = Get.put(VendorsController());
+  final firebaseServices = FirebaseServices();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -31,12 +33,12 @@ class VendorsView extends StatelessWidget {
               itemCount: snapshot.data!.docs.length,
               separatorBuilder: (context, index) => const SizedBox(height: 10),
               itemBuilder: (context, index) {
-                Future isAdded = FirebaseServices.isVendorAdded(
-                    snapshot.data!.docs[index].id);
+                Future isAdded = firebaseServices
+                    .isVendorAdded(snapshot.data!.docs[index].id);
                 return VendorTile(
                   vendorSnapshot: snapshot.data!.docs[index],
-                  onPressed: () => FirebaseServices.addRemoveVendor(
-                      snapshot.data!.docs[index].id),
+                  // onPressed: () => firebaseServices
+                  //     .addRemoveVendor(snapshot.data!.docs[index].id),
                   // if added remove else add
                   isSubscribed: isAdded,
                 );

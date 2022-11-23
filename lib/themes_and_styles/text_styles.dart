@@ -21,8 +21,9 @@ TextStyle subTextStyle() {
   );
 }
 
-TextStyle italicSmallTextStyle() {
-  return const TextStyle(
+TextStyle italicSmallTextStyle({Color color = Colors.black54}) {
+  return TextStyle(
+    color: color,
     fontSize: 12,
     fontStyle: FontStyle.italic,
   );
